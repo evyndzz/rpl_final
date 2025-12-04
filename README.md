@@ -1,4 +1,4 @@
-# Inventaris Management System
+# Sistem Informasi Managemen Toko Elektronik (SIMATIK)
 
 Aplikasi manajemen inventaris berbasis web yang dibangun dengan **AdonisJS** (backend) dan **React** (frontend) menggunakan **Inertia.js** untuk integrasi seamless antara keduanya.
 
@@ -474,12 +474,6 @@ Jika menemukan bug atau ingin menambah fitur:
 3. Commit changes (`git commit -m 'Add: deskripsi'`)
 4. Push ke branch (`git push origin feature/nama-fitur`)
 5. Buat Pull Request
-
----
-
-## 📝 Lisensi
-
-Project ini menggunakan MIT License. Silakan gunakan sesuai kebutuhan Anda.
 
 ---
 
