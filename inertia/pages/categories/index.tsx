@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Head, Link, useForm, router } from '@inertiajs/react'
+import { Head, useForm, router } from '@inertiajs/react'
 import Layout from '../../components/Layout'
 
 interface Category {
@@ -14,9 +14,13 @@ interface Props {
     data: Category[]
     meta: any
   }
+  flash?: {
+    success?: string
+    error?: string
+  }
 }
 
-export default function CategoriesIndex({ categories }: Props) {
+export default function CategoriesIndex({ categories, flash }: Props) {
   const [showModal, setShowModal] = useState(false)
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
   const { data, setData, post, put, processing, errors, reset } = useForm({
@@ -25,18 +29,29 @@ export default function CategoriesIndex({ categories }: Props) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('Submitting category form', { editingCategory, data })
     
     if (editingCategory) {
+<<<<<<< HEAD
 <<<<<<< HEAD
       // Update existing category
 =======
   
 >>>>>>> dfea00d (tambahkan)
       put(`/api/categories/${editingCategory.id}`, {
+=======
+
+      put(`/api/categories/${editingCategory.id}`, data, {
+>>>>>>> 4125e4a (update pop up)
         onSuccess: () => {
+          console.log('Category updated successfully')
           setShowModal(false)
           setEditingCategory(null)
           reset()
+          router.reload({ only: ['categories'] })
+        },
+        onError: (err) => {
+          console.error('Failed to update category', err)
         }
       })
     } else {
@@ -44,11 +59,20 @@ export default function CategoriesIndex({ categories }: Props) {
       // Create new category
 =======
   
+<<<<<<< HEAD
 >>>>>>> dfea00d (tambahkan)
       post('/api/categories', {
+=======
+      post('/api/categories', data, {
+>>>>>>> 4125e4a (update pop up)
         onSuccess: () => {
+          console.log('Category created successfully')
           setShowModal(false)
           reset()
+          router.reload({ only: ['categories'] })
+        },
+        onError: (err) => {
+          console.error('Failed to create category', err)
         }
       })
     }
@@ -56,11 +80,19 @@ export default function CategoriesIndex({ categories }: Props) {
 
   const handleDelete = (categoryId: number) => {
     if (confirm('Are you sure you want to delete this category?')) {
-      router.delete(`/api/categories/${categoryId}`)
+      router.delete(`/api/categories/${categoryId}`, {
+        onSuccess: () => {
+          router.reload({ only: ['categories'] })
+        },
+        onError: () => {
+          // errors handled by server/useForm
+        }
+      })
     }
   }
 
   const handleEdit = (category: Category) => {
+    console.log('Edit clicked', category)
     setEditingCategory(category)
     setData({
       nama: category.nama,
@@ -192,6 +224,8 @@ export default function CategoriesIndex({ categories }: Props) {
             </div>
           </div>
         )}
+
+        {/* Global flash handled by `FlashMessage` in Layout */}
       </Layout>
     </>
   )

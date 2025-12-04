@@ -21,9 +21,13 @@ interface Props {
     data: Supplier[]
     meta: any
   }
+  flash?: {
+    success?: string
+    error?: string
+  }
 }
 
-export default function SuppliersIndex({ suppliers }: Props) {
+export default function SuppliersIndex({ suppliers, flash }: Props) {
   const [showModal, setShowModal] = useState(false)
   const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null)
   const { data, setData, post, put, processing, errors, reset } = useForm({
@@ -47,6 +51,10 @@ export default function SuppliersIndex({ suppliers }: Props) {
           setShowModal(false)
           setEditingSupplier(null)
           reset()
+          router.reload({ only: ['suppliers'] })
+        },
+        onError: () => {
+          // errors handled by useForm/server
         }
       })
     } else {
@@ -59,6 +67,10 @@ export default function SuppliersIndex({ suppliers }: Props) {
         onSuccess: () => {
           setShowModal(false)
           reset()
+          router.reload({ only: ['suppliers'] })
+        },
+        onError: () => {
+          // errors handled by useForm/server
         }
       })
     }
@@ -66,7 +78,14 @@ export default function SuppliersIndex({ suppliers }: Props) {
 
   const handleDelete = (supplierId: number) => {
     if (confirm('Are you sure you want to delete this supplier?')) {
-      router.delete(`/api/suppliers/${supplierId}`)
+      router.delete(`/api/suppliers/${supplierId}`, {
+        onSuccess: () => {
+          router.reload({ only: ['suppliers'] })
+        },
+        onError: () => {
+          // errors handled by server
+        }
+      })
     }
   }
 
@@ -262,6 +281,8 @@ export default function SuppliersIndex({ suppliers }: Props) {
             </div>
           </div>
         )}
+
+        {/* Global flash handled by `FlashMessage` in Layout */}
       </Layout>
     </>
   )

@@ -36,9 +36,13 @@ interface Props {
     meta: any
   }
   categories: Category[]
+  flash?: {
+    success?: string
+    error?: string
+  }
 }
 
-export default function ProductsIndex({ products, categories }: Props) {
+export default function ProductsIndex({ products, categories, flash }: Props) {
   const [showModal, setShowModal] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
@@ -53,6 +57,7 @@ export default function ProductsIndex({ products, categories }: Props) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 <<<<<<< HEAD
+<<<<<<< HEAD
     
     if (editingProduct) {
       // Update existing product
@@ -61,20 +66,28 @@ export default function ProductsIndex({ products, categories }: Props) {
 =======
     console.log('Form submitted. Data:', data)
     console.log('Editing product:', editingProduct)
+=======
+>>>>>>> 4125e4a (update pop up)
 
     if (editingProduct) {
-   
-      console.log('Updating product:', editingProduct.id)
-      put(`/api/products/${editingProduct.id}`, {
+      // Use form put (sends current form data)
+      put(`/api/products/${editingProduct.id}`, data, {
         onSuccess: () => {
+<<<<<<< HEAD
           console.log('Product updated successfully')
 >>>>>>> dfea00d (tambahkan)
+=======
+>>>>>>> 4125e4a (update pop up)
           setShowModal(false)
           setEditingProduct(null)
           reset()
+        },
+        onError: () => {
+          // keep modal open and show errors handled by useForm
         }
       })
     } else {
+<<<<<<< HEAD
 <<<<<<< HEAD
       // Create new product
       post('/api/products', {
@@ -86,9 +99,14 @@ export default function ProductsIndex({ products, categories }: Props) {
         onSuccess: () => {
           console.log('Product created successfully')
 >>>>>>> dfea00d (tambahkan)
+=======
+      // Create new product using form post
+      post('/api/products', data, {
+        onSuccess: () => {
+>>>>>>> 4125e4a (update pop up)
           setShowModal(false)
           reset()
-        }
+        },
       })
     }
   }
@@ -105,12 +123,13 @@ export default function ProductsIndex({ products, categories }: Props) {
 =======
     console.log('Edit button clicked for product:', product)
     setEditingProduct(product)
-    
-   
     reset()
     
+<<<<<<< HEAD
  
 >>>>>>> dfea00d (tambahkan)
+=======
+>>>>>>> 4125e4a (update pop up)
     setData({
       nama: product.nama,
       merk: product.merk || '',
@@ -371,6 +390,8 @@ export default function ProductsIndex({ products, categories }: Props) {
             </div>
           </div>
         )}
+
+        {/* Global flash handled by `FlashMessage` in Layout */}
       </Layout>
     </>
   )

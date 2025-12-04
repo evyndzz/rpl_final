@@ -64,10 +64,18 @@ interface Props {
 export default function TransactionsIndex({ transactions, products }: Props) {
 =======
   suppliers: Supplier[]
+  flash?: {
+    success?: string
+    error?: string
+  }
 }
 
+<<<<<<< HEAD
 export default function TransactionsIndex({ transactions, products, suppliers }: Props) {
 >>>>>>> dfea00d (tambahkan)
+=======
+export default function TransactionsIndex({ transactions, products, suppliers, flash }: Props) {
+>>>>>>> 4125e4a (update pop up)
   const [showModal, setShowModal] = useState(false)
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
   const [typeFilter, setTypeFilter] = useState<'all' | 'masuk' | 'keluar'>('all')
@@ -87,37 +95,43 @@ export default function TransactionsIndex({ transactions, products, suppliers }:
     
     if (editingTransaction) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       // Update existing transaction
 =======
     
 >>>>>>> dfea00d (tambahkan)
       console.log('Updating transaction:', editingTransaction.id, 'with data:', data)
+=======
+>>>>>>> 4125e4a (update pop up)
       put(`/api/transactions/${editingTransaction.id}`, {
         onSuccess: () => {
-          console.log('Transaction updated successfully')
           setShowModal(false)
           setEditingTransaction(null)
           reset()
+          router.reload({ only: ['transactions', 'products', 'suppliers'] })
         },
-        onError: (errors) => {
-          console.error('Update errors:', errors)
+        onError: () => {
+          // errors handled by useForm/server
         }
       })
     } else {
+<<<<<<< HEAD
 <<<<<<< HEAD
       // Create new transaction
 =======
     
 >>>>>>> dfea00d (tambahkan)
       console.log('Creating new transaction with data:', data)
+=======
+>>>>>>> 4125e4a (update pop up)
       post('/api/transactions', {
         onSuccess: () => {
-          console.log('Transaction created successfully')
           setShowModal(false)
           reset()
+          router.reload({ only: ['transactions', 'products', 'suppliers'] })
         },
-        onError: (errors) => {
-          console.error('Create errors:', errors)
+        onError: () => {
+          // errors handled by useForm/server
         }
       })
     }
@@ -125,12 +139,18 @@ export default function TransactionsIndex({ transactions, products, suppliers }:
 
   const handleDelete = (transactionId: number) => {
     if (confirm('Are you sure you want to delete this transaction?')) {
-      router.delete(`/api/transactions/${transactionId}`)
+      router.delete(`/api/transactions/${transactionId}`, {
+        onSuccess: () => {
+          router.reload({ only: ['transactions', 'products', 'suppliers'] })
+        },
+        onError: () => {
+          // errors handled by server
+        }
+      })
     }
   }
 
   const handleEdit = (transaction: Transaction) => {
-    console.log('Editing transaction:', transaction)
     setEditingTransaction(transaction)
     setData({
       produk_id: transaction.produk_id.toString(),
@@ -414,6 +434,8 @@ export default function TransactionsIndex({ transactions, products, suppliers }:
             </div>
           </div>
         )}
+
+        {/* Global flash handled by `FlashMessage` in Layout */}
       </Layout>
     </>
   )

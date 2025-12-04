@@ -85,8 +85,15 @@ router.group(() => {
       .preload('products')
       .orderBy('nama')
     
+    const flashSuccess = session.flashMessages.get('success')
+    const flashError = session.flashMessages.get('error')
+    
     return inertia.render('categories/index', {
-      categories: { data: categories, meta: {} }
+      categories: { data: categories, meta: {} },
+      flash: (flashSuccess || flashError) ? {
+        success: flashSuccess || undefined,
+        error: flashError || undefined
+      } : undefined
     })
   })
   
@@ -118,12 +125,20 @@ router.group(() => {
     const categories = await Category.query()
       .orderBy('nama')
     
+    const flashSuccess = session.flashMessages.get('success')
+    const flashError = session.flashMessages.get('error')
+    
     return inertia.render('products/index', {
       products: { data: products, meta: {} },
-      categories: categories
+      categories: categories,
+      flash: (flashSuccess || flashError) ? {
+        success: flashSuccess || undefined,
+        error: flashError || undefined
+      } : undefined
     })
   })
   
+<<<<<<< HEAD
 <<<<<<< HEAD
   // Transactions UI
   router.get('/transactions', async ({ inertia, session, response }) => {
@@ -131,6 +146,9 @@ router.group(() => {
 =======
   router.get  ('/transactions', async ({ inertia, session, response }) => {
 >>>>>>> dfea00d (tambahkan)
+=======
+  router.get('/transactions', async ({ inertia, session, response }) => {
+>>>>>>> 4125e4a (update pop up)
     const authToken = session.get('auth_token')
     const user = session.get('user')
     
@@ -144,9 +162,11 @@ router.group(() => {
 >>>>>>> dfea00d (tambahkan)
     const Transaction = (await import('#models/transaction')).default
     const Product = (await import('#models/produk')).default
+    const Supplier = (await import('#models/supplier')).default
     
     const transactions = await Transaction.query()
       .preload('product')
+      .preload('supplier')
       .orderBy('created_at', 'desc')
     
 <<<<<<< HEAD
@@ -160,6 +180,7 @@ router.group(() => {
       jumlah: transaction.jumlah,
       catatan: transaction.catatan,
 <<<<<<< HEAD
+<<<<<<< HEAD
       created_at: transaction.createdAt?.toISO() || transaction.created_at?.toString() || new Date().toISOString(),
       updated_at: transaction.updatedAt?.toISO() || transaction.updated_at?.toString() || new Date().toISOString(),
 =======
@@ -167,14 +188,32 @@ router.group(() => {
       updated_at: transaction.updated_at?.toString() || new Date().toISOString(),
 >>>>>>> dfea00d (tambahkan)
       product: transaction.product
+=======
+      supplier_id: transaction.supplier_id,
+      created_at: transaction.created_at?.toString() || new Date().toISOString(),
+      updated_at: transaction.updated_at?.toString() || new Date().toISOString(),
+      product: transaction.product,
+      supplier: transaction.supplier
+>>>>>>> 4125e4a (update pop up)
     }))
     
     const products = await Product.query()
       .orderBy('nama')
     
+    const suppliers = await Supplier.query()
+      .orderBy('nama')
+    
+    const flashSuccess = session.flashMessages.get('success')
+    const flashError = session.flashMessages.get('error')
+    
     return inertia.render('transactions/index', {
       transactions: { data: serializedTransactions, meta: {} },
-      products: products
+      products: products,
+      suppliers: suppliers,
+      flash: (flashSuccess || flashError) ? {
+        success: flashSuccess || undefined,
+        error: flashError || undefined
+      } : undefined
     })
   })
   
@@ -202,8 +241,15 @@ router.group(() => {
       .preload('products')
       .orderBy('nama')
     
+    const flashSuccess = session.flashMessages.get('success')
+    const flashError = session.flashMessages.get('error')
+    
     return inertia.render('suppliers/index', {
-      suppliers: { data: suppliers, meta: {} }
+      suppliers: { data: suppliers, meta: {} },
+      flash: (flashSuccess || flashError) ? {
+        success: flashSuccess || undefined,
+        error: flashError || undefined
+      } : undefined
     })
   })
 })
@@ -220,10 +266,18 @@ router.group(() => {
 
 router.group(() => {
 
-  router.get('/profile', '#controllers/http/AuthController.profile')
-  router.post('/refresh', '#controllers/http/AuthController.refresh')
+  router.get('/profile', '#controllers/Http/AuthController.profile')
+  router.post('/refresh', '#controllers/Http/AuthController.refresh')
   
+  router.get('/categories', '#controllers/Http/CategoriesController.index')
+  router.post('/categories', '#controllers/Http/CategoriesController.store')
+  router.get('/categories/:id', '#controllers/Http/CategoriesController.show')
+  router.put('/categories/:id', '#controllers/Http/CategoriesController.update')
+  router.delete('/categories/:id', '#controllers/Http/CategoriesController.destroy')
+  router.get('/categories/:id/stats', '#controllers/Http/CategoriesController.stats')
+  router.get('/categories/search', '#controllers/Http/CategoriesController.search')
 
+<<<<<<< HEAD
 >>>>>>> dfea00d (tambahkan)
   router.get('/categories', '#controllers/http/CategoriesController.index')
   router.post('/categories', '#controllers/http/CategoriesController.store')
@@ -274,4 +328,29 @@ router.group(() => {
   router.put('/suppliers/:id', '#controllers/http/SuppliersController.update')
   router.delete('/suppliers/:id', '#controllers/http/SuppliersController.destroy')
   router.get('/suppliers/search', '#controllers/http/SuppliersController.search')
+=======
+  router.get('/products/search', '#controllers/Http/ProductsController.search')
+  router.get('/products/category/:categoryId', '#controllers/Http/ProductsController.getByCategory')
+  router.get('/products', '#controllers/Http/ProductsController.index')
+  router.post('/products', '#controllers/Http/ProductsController.store')
+  router.get('/products/:id', '#controllers/Http/ProductsController.show')
+  router.put('/products/:id', '#controllers/Http/ProductsController.update')
+  router.delete('/products/:id', '#controllers/Http/ProductsController.destroy')
+
+  router.get('/transactions', '#controllers/Http/TransactionsController.index')
+  router.post('/transactions', '#controllers/Http/TransactionsController.store')
+  router.get('/transactions/:id', '#controllers/Http/TransactionsController.show')
+  router.put('/transactions/:id', '#controllers/Http/TransactionsController.update')
+  router.delete('/transactions/:id', '#controllers/Http/TransactionsController.destroy')
+  router.get('/transactions/product/:productId', '#controllers/Http/TransactionsController.getByProduct')
+  router.get('/transactions/stats', '#controllers/Http/TransactionsController.stats')
+  router.get('/transactions/search', '#controllers/Http/TransactionsController.search')
+
+  router.get('/suppliers', '#controllers/Http/SuppliersController.index')
+  router.post('/suppliers', '#controllers/Http/SuppliersController.store')
+  router.get('/suppliers/:id', '#controllers/Http/SuppliersController.show')
+  router.put('/suppliers/:id', '#controllers/Http/SuppliersController.update')
+  router.delete('/suppliers/:id', '#controllers/Http/SuppliersController.destroy')
+  router.get('/suppliers/search', '#controllers/Http/SuppliersController.search')
+>>>>>>> 4125e4a (update pop up)
 }).prefix('/api') 

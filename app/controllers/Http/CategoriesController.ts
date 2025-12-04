@@ -18,6 +18,7 @@ export default class CategoriesController {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /**
    * Store a new category
    */
@@ -27,15 +28,20 @@ export default class CategoriesController {
     // Validate required fields
 =======
   async store({ request }: HttpContext) {
+=======
+  async store({ request, response, session }: HttpContext) {
+>>>>>>> 4125e4a (update pop up)
     const data = request.only(['nama'])
 
 >>>>>>> dfea00d (tambahkan)
     if (!data.nama) {
-      return { error: 'Nama kategori harus diisi' }
+      session.flash('error', 'Nama kategori harus diisi')
+      return response.redirect('/categories')
     }
 
     const category = await Category.create(data)
-    return category
+    session.flash('success', 'Kategori berhasil ditambahkan')
+    return response.redirect('/categories')
   }
 
 <<<<<<< HEAD
@@ -54,21 +60,27 @@ export default class CategoriesController {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /**
    * Update existing category
    */
 =======
 >>>>>>> dfea00d (tambahkan)
   async update({ params, request }: HttpContext) {
+=======
+  async update({ params, request, response, session }: HttpContext) {
+>>>>>>> 4125e4a (update pop up)
     const category = await Category.findOrFail(params.id)
     const data = request.only(['nama'])
     
     category.merge(data)
     await category.save()
     
-    return category
+    session.flash('success', 'Kategori berhasil diperbarui')
+    return response.redirect('/categories')
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /**
    * Delete category
@@ -92,13 +104,27 @@ export default class CategoriesController {
    */
 =======
   async destroy({ params }: HttpContext) {
+=======
+  async destroy({ params, response, session, request }: HttpContext) {
+>>>>>>> 4125e4a (update pop up)
     const category = await Category.findOrFail(params.id)
     const productCount = await category.related('products').query().count('* as total')
     if (productCount[0].total > 0) {
-      return { error: 'Tidak dapat menghapus kategori yang masih memiliki produk' }
+      if (request.header('X-Inertia')) {
+        session.flash('error', 'Tidak dapat menghapus kategori yang masih memiliki produk')
+        return response.redirect('/categories')
+      }
+      return response.json({ error: 'Tidak dapat menghapus kategori yang masih memiliki produk' })
     }
     await category.delete()
-    return { message: 'Kategori berhasil dihapus' }
+    
+    // Check if this is an Inertia request
+    if (request.header('X-Inertia')) {
+      session.flash('success', 'Kategori berhasil dihapus')
+      return response.redirect('/categories')
+    }
+    
+    return response.json({ message: 'Kategori berhasil dihapus' })
   }
 >>>>>>> dfea00d (tambahkan)
   async stats({ params }: HttpContext) {

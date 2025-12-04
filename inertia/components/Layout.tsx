@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from '@inertiajs/react'
+import FlashMessage from './FlashMessage'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -20,9 +21,13 @@ export default function Layout({ children, title }: LayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
 <<<<<<< HEAD
+<<<<<<< HEAD
       {/* Mobile sidebar */}
 =======
 >>>>>>> dfea00d (tambahkan)
+=======
+      <FlashMessage />
+>>>>>>> 4125e4a (update pop up)
       <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
         <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white">

@@ -18,6 +18,7 @@ export default class SuppliersController {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /**
    * Store a new supplier
    */
@@ -27,15 +28,20 @@ export default class SuppliersController {
     // Validate required fields
 =======
   async store({ request }: HttpContext) {
+=======
+  async store({ request, response, session }: HttpContext) {
+>>>>>>> 4125e4a (update pop up)
     const data = request.only(['nama', 'alamat', 'telepon', 'email'])
 
 >>>>>>> dfea00d (tambahkan)
     if (!data.nama) {
-      return { error: 'Nama supplier harus diisi' }
+      session.flash('error', 'Nama supplier harus diisi')
+      return response.redirect('/suppliers')
     }
 
     const supplier = await Supplier.create(data)
-    return supplier
+    session.flash('success', 'Supplier berhasil ditambahkan')
+    return response.redirect('/suppliers')
   }
 
 <<<<<<< HEAD
@@ -54,21 +60,27 @@ export default class SuppliersController {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /**
    * Update existing supplier
    */
 =======
 >>>>>>> dfea00d (tambahkan)
   async update({ params, request }: HttpContext) {
+=======
+  async update({ params, request, response, session }: HttpContext) {
+>>>>>>> 4125e4a (update pop up)
     const supplier = await Supplier.findOrFail(params.id)
     const data = request.only(['nama', 'alamat', 'telepon', 'email'])
     
     supplier.merge(data)
     await supplier.save()
     
-    return supplier
+    session.flash('success', 'Supplier berhasil diperbarui')
+    return response.redirect('/suppliers')
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /**
    * Delete supplier
@@ -92,13 +104,27 @@ export default class SuppliersController {
    */
 =======
   async destroy({ params }: HttpContext) {
+=======
+  async destroy({ params, response, session, request }: HttpContext) {
+>>>>>>> 4125e4a (update pop up)
     const supplier = await Supplier.findOrFail(params.id)
     const productCount = await supplier.related('products').query().count('* as total')
     if (productCount[0].total > 0) {
-      return { error: 'Tidak dapat menghapus supplier yang masih memiliki produk' }
+      if (request.header('X-Inertia')) {
+        session.flash('error', 'Tidak dapat menghapus supplier yang masih memiliki produk')
+        return response.redirect('/suppliers')
+      }
+      return response.json({ error: 'Tidak dapat menghapus supplier yang masih memiliki produk' })
     }
     await supplier.delete()
-    return { message: 'Supplier berhasil dihapus' }
+    
+    // Check if this is an Inertia request
+    if (request.header('X-Inertia')) {
+      session.flash('success', 'Supplier berhasil dihapus')
+      return response.redirect('/suppliers')
+    }
+    
+    return response.json({ message: 'Supplier berhasil dihapus' })
   }
 >>>>>>> dfea00d (tambahkan)
   async search({ request }: HttpContext) {

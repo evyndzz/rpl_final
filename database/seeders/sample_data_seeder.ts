@@ -2,93 +2,88 @@ import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import Category from '#models/kategori'
 import Product from '#models/produk'
 import Transaction from '#models/transaction'
+import Supplier from '#models/supplier'
 
 export default class extends BaseSeeder {
   async run() {
-<<<<<<< HEAD
-    // Create sample categories
-=======
->>>>>>> dfea00d (tambahkan)
-    const electronics = await Category.firstOrCreate(
-      { nama: 'Electronics' },
-      { nama: 'Electronics' }
+    // Create sample categories - elektronik
+    const laptopCategory = await Category.firstOrCreate(
+      { nama: 'Laptop & Komputer' },
+      { nama: 'Laptop & Komputer' }
     )
     
-    const clothing = await Category.firstOrCreate(
-      { nama: 'Clothing' },
-      { nama: 'Clothing' }
+    const smartphoneCategory = await Category.firstOrCreate(
+      { nama: 'Smartphone & Tablet' },
+      { nama: 'Smartphone & Tablet' }
     )
     
-    const books = await Category.firstOrCreate(
-      { nama: 'Books' },
-      { nama: 'Books' }
+    const audioCategory = await Category.firstOrCreate(
+      { nama: 'Audio & Headphone' },
+      { nama: 'Audio & Headphone' }
     )
     
-<<<<<<< HEAD
-    // Create sample products
-=======
-
->>>>>>> dfea00d (tambahkan)
-    const laptop = await Product.firstOrCreate(
-      { nama: 'MacBook Pro' },
+    // Create sample supplier
+    const supplier = await Supplier.firstOrCreate(
+      { email: 'info@techsolutions.co.id' },
       {
-        nama: 'MacBook Pro',
+        nama: 'PT. Tech Solutions Indonesia',
+        alamat: 'Jl. Sudirman No. 123, Jakarta Selatan',
+        telepon: '021-12345678',
+        email: 'info@techsolutions.co.id'
+      }
+    )
+    
+    // Create sample products - elektronik
+    const laptop = await Product.firstOrCreate(
+      { nama: 'MacBook Pro M3' },
+      {
+        nama: 'MacBook Pro M3 14"',
         merk: 'Apple',
-        stok: 5,
-        harga: 15000000,
-        kategori_id: electronics.id
+        stok: 10,
+        harga: 28000000,
+        kategori_id: laptopCategory.id,
+        supplier_id: supplier.id
       }
     )
     
     const phone = await Product.firstOrCreate(
-      { nama: 'iPhone 15' },
+      { nama: 'iPhone 15 Pro' },
       {
-        nama: 'iPhone 15',
+        nama: 'iPhone 15 Pro',
         merk: 'Apple',
-        stok: 10,
-        harga: 8000000,
-        kategori_id: electronics.id
+        stok: 20,
+        harga: 18000000,
+        kategori_id: smartphoneCategory.id,
+        supplier_id: supplier.id
       }
     )
     
-    const tshirt = await Product.firstOrCreate(
-      { nama: 'Cotton T-Shirt' },
+    const airpods = await Product.firstOrCreate(
+      { nama: 'AirPods Pro 2' },
       {
-        nama: 'Cotton T-Shirt',
-        merk: 'Uniqlo',
-        stok: 25,
-        harga: 150000,
-        kategori_id: clothing.id
+        nama: 'AirPods Pro 2',
+        merk: 'Apple',
+        stok: 30,
+        harga: 4500000,
+        kategori_id: audioCategory.id,
+        supplier_id: supplier.id
       }
     )
     
-    const book = await Product.firstOrCreate(
-      { nama: 'JavaScript Guide' },
-      {
-        nama: 'JavaScript Guide',
-        merk: 'O\'Reilly',
-        stok: 8,
-        harga: 250000,
-        kategori_id: books.id
-      }
-    )
-    
-<<<<<<< HEAD
     // Create sample transactions
-=======
->>>>>>> dfea00d (tambahkan)
     await Transaction.firstOrCreate(
       { 
         produk_id: laptop.id,
         tipe: 'masuk',
-        jumlah: 5,
+        jumlah: 10,
         catatan: 'Initial stock'
       },
       {
         produk_id: laptop.id,
         tipe: 'masuk',
-        jumlah: 5,
-        catatan: 'Initial stock'
+        jumlah: 10,
+        catatan: 'Initial stock',
+        supplier_id: supplier.id
       }
     )
     
@@ -96,35 +91,36 @@ export default class extends BaseSeeder {
       { 
         produk_id: phone.id,
         tipe: 'masuk',
-        jumlah: 10,
+        jumlah: 20,
         catatan: 'New shipment'
       },
       {
         produk_id: phone.id,
         tipe: 'masuk',
-        jumlah: 10,
-        catatan: 'New shipment'
+        jumlah: 20,
+        catatan: 'New shipment',
+        supplier_id: supplier.id
       }
     )
     
     await Transaction.firstOrCreate(
       { 
-        produk_id: tshirt.id,
+        produk_id: airpods.id,
         tipe: 'keluar',
-        jumlah: 3,
+        jumlah: 5,
         catatan: 'Customer purchase'
       },
       {
-        produk_id: tshirt.id,
+        produk_id: airpods.id,
         tipe: 'keluar',
-        jumlah: 3,
+        jumlah: 5,
         catatan: 'Customer purchase'
       }
     )
     
-    console.log('✅ Sample data created successfully!')
-    console.log('📦 Categories: Electronics, Clothing, Books')
-    console.log('🛍️  Products: MacBook Pro, iPhone 15, Cotton T-Shirt, JavaScript Guide')
+    console.log('✅ Sample electronic data created successfully!')
+    console.log('📦 Categories: Laptop & Komputer, Smartphone & Tablet, Audio & Headphone')
+    console.log('🛍️  Products: MacBook Pro M3, iPhone 15 Pro, AirPods Pro 2')
     console.log('📋 Transactions: 3 sample transactions')
   }
 }

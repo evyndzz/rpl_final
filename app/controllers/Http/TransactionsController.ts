@@ -33,6 +33,7 @@ export default class TransactionsController {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /**
    * Store a new transaction
    */
@@ -42,15 +43,20 @@ export default class TransactionsController {
     // Validate required fields
 =======
   async store({ request }: HttpContext) {
+=======
+  async store({ request, response, session }: HttpContext) {
+>>>>>>> 4125e4a (update pop up)
     const data = request.only(['produk_id', 'tipe', 'jumlah', 'catatan', 'supplier_id'])
 
 >>>>>>> dfea00d (tambahkan)
     if (!data.produk_id || !data.tipe || !data.jumlah) {
-      return { error: 'Produk ID, tipe, dan jumlah harus diisi' }
+      session.flash('error', 'Produk ID, tipe, dan jumlah harus diisi')
+      return response.redirect('/transactions')
     }
 
     if (!['masuk', 'keluar'].includes(data.tipe)) {
-      return { error: 'Tipe harus berupa "masuk" atau "keluar"' }
+      session.flash('error', 'Tipe harus berupa "masuk" atau "keluar"')
+      return response.redirect('/transactions')
     }
 
 <<<<<<< HEAD
@@ -63,7 +69,8 @@ export default class TransactionsController {
 
 >>>>>>> dfea00d (tambahkan)
     if (data.tipe === 'keluar' && product.stok < data.jumlah) {
-      return { error: 'Stok tidak mencukupi' }
+      session.flash('error', 'Stok tidak mencukupi')
+      return response.redirect('/transactions')
     }
 
     const transaction = await Transaction.create(data)
@@ -82,7 +89,8 @@ export default class TransactionsController {
     }
     await product.save()
     
-    return transaction
+    session.flash('success', 'Transaksi berhasil ditambahkan')
+    return response.redirect('/transactions')
   }
 
 <<<<<<< HEAD
@@ -105,16 +113,19 @@ export default class TransactionsController {
   }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   /**
    * Update existing transaction
    */
 =======
 >>>>>>> dfea00d (tambahkan)
   async update({ params, request }: HttpContext) {
+=======
+  async update({ params, request, response, session }: HttpContext) {
+>>>>>>> 4125e4a (update pop up)
     try {
-      console.log('Update transaction request:', request.all())
-      
       const transaction = await Transaction.findOrFail(params.id)
+<<<<<<< HEAD
       console.log('Found transaction:', transaction.toJSON())
       
 <<<<<<< HEAD
@@ -123,16 +134,19 @@ export default class TransactionsController {
       
       // Validate required fields
 =======
+=======
+>>>>>>> 4125e4a (update pop up)
       const data = request.only(['produk_id', 'tipe', 'jumlah', 'catatan', 'supplier_id'])
-      console.log('Update data:', data)
 
 >>>>>>> dfea00d (tambahkan)
       if (!data.produk_id || !data.tipe || !data.jumlah) {
-        return { error: 'Produk ID, tipe, dan jumlah harus diisi' }
+        session.flash('error', 'Produk ID, tipe, dan jumlah harus diisi')
+        return response.redirect('/transactions')
       }
 
       if (!['masuk', 'keluar'].includes(data.tipe)) {
-        return { error: 'Tipe harus berupa "masuk" atau "keluar"' }
+        session.flash('error', 'Tipe harus berupa "masuk" atau "keluar"')
+        return response.redirect('/transactions')
       }
 
 <<<<<<< HEAD
@@ -145,7 +159,8 @@ export default class TransactionsController {
 
 >>>>>>> dfea00d (tambahkan)
       if (data.tipe === 'keluar' && product.stok < data.jumlah) {
-        return { error: 'Stok tidak mencukupi' }
+        session.flash('error', 'Stok tidak mencukupi')
+        return response.redirect('/transactions')
       }
 
 <<<<<<< HEAD
@@ -156,14 +171,16 @@ export default class TransactionsController {
       await transaction.save()
       await transaction.load('product')
       
-      console.log('Transaction updated successfully:', transaction.toJSON())
-      return transaction
+      session.flash('success', 'Transaksi berhasil diperbarui')
+      return response.redirect('/transactions')
     } catch (error) {
       console.error('Update transaction error:', error)
-      return { error: 'Terjadi kesalahan saat mengupdate transaksi' }
+      session.flash('error', 'Terjadi kesalahan saat mengupdate transaksi')
+      return response.redirect('/transactions')
     }
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /**
    * Delete transaction
@@ -175,6 +192,9 @@ export default class TransactionsController {
     // Revert stock changes
 =======
   async destroy({ params }: HttpContext) {
+=======
+  async destroy({ params, response, session, request }: HttpContext) {
+>>>>>>> 4125e4a (update pop up)
     const transaction = await Transaction.findOrFail(params.id)
     const product = await transaction.related('product').query().firstOrFail()
 
@@ -187,7 +207,14 @@ export default class TransactionsController {
     await product.save()
     
     await transaction.delete()
-    return { message: 'Transaksi berhasil dihapus' }
+    
+    // Check if this is an Inertia request
+    if (request.header('X-Inertia')) {
+      session.flash('success', 'Transaksi berhasil dihapus')
+      return response.redirect('/transactions')
+    }
+    
+    return response.json({ message: 'Transaksi berhasil dihapus' })
   }
 
 <<<<<<< HEAD

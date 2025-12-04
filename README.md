@@ -127,10 +127,10 @@ node --version && npm --version && git --version && mysql --version
 ```bash
 # 1. Buka terminal/command prompt di folder yang diinginkan
 # 2. Clone repository
-git clone https://github.com/evyndzz/API-First-Project.git
+git clone https://github.com/evyndzz/rpl_final.git
 
 # 3. Masuk ke folder project
-cd API-First-Project
+cd rpl_final
 
 # 4. Verify folder structure
 # Pastikan ada file: package.json, adonisrc.ts, vite.config.ts, tsconfig.json
@@ -228,7 +228,7 @@ node ace db:seed
 
 ```bash
 # Pastikan sudah di dalam folder project
-cd API-First-Project
+cd rpl_final
 
 # Install semua npm dependencies
 npm install
@@ -326,7 +326,7 @@ npm run dev:full
 ## 📂 Struktur Folder Project
 
 ```
-API-First-Project/
+rpl_final/
 ├── app/
 │   ├── controllers/
 │   │   └── Http/              # API Controllers (Products, Categories, etc)
@@ -486,8 +486,9 @@ Project ini menggunakan MIT License. Silakan gunakan sesuai kebutuhan Anda.
 ## 📞 Contact & Support
 
 Jika ada pertanyaan atau butuh bantuan:
-- Email: evyndzz@example.com
-- GitHub Issues: https://github.com/evyndzz/API-First-Project/issues
+- Email: putukelvin70@gmail.com
+- GitHub Repository: https://github.com/evyndzz/rpl_final
+- GitHub Issues: https://github.com/evyndzz/rpl_final/issues
 
 ---
 

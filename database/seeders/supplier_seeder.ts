@@ -3,11 +3,7 @@ import Supplier from '#models/supplier'
 
 export default class extends BaseSeeder {
   async run() {
-<<<<<<< HEAD
-    // Sample suppliers data
-=======
-
->>>>>>> dfea00d (tambahkan)
+    // Sample suppliers data - fokus elektronik
     const suppliersData = [
       {
         nama: 'PT. Tech Solutions Indonesia',
@@ -16,36 +12,38 @@ export default class extends BaseSeeder {
         email: 'info@techsolutions.co.id'
       },
       {
-        nama: 'CV. Fashion Store',
+        nama: 'CV. Electronic Store',
         alamat: 'Jl. Kemang Raya No. 456, Jakarta Selatan',
         telepon: '021-87654321',
-        email: 'contact@fashionstore.com'
+        email: 'contact@electronicstore.com'
       },
       {
-        nama: 'UD. Buku Mandiri',
+        nama: 'PT. Gadget Distributor',
         alamat: 'Jl. Gatot Subroto No. 789, Jakarta Pusat',
         telepon: '021-11223344',
-        email: 'buku@mandiri.co.id'
+        email: 'sales@gadgetdist.co.id'
       },
       {
-        nama: 'PT. Electronics Pro',
+        nama: 'UD. Komputer Mandiri',
         alamat: 'Jl. Thamrin No. 321, Jakarta Pusat',
+        telepon: '021-55667788',
+        email: 'info@komputermandiri.co.id'
+      },
+      {
+        nama: 'PT. Audio Visual Pro',
+        alamat: 'Jl. Senopati No. 654, Jakarta Selatan',
         telepon: '021-99887766',
-        email: 'sales@electronicspro.com'
+        email: 'sales@avpro.co.id'
       }
     ]
 
-<<<<<<< HEAD
     // Check if suppliers already exist
-=======
-
->>>>>>> dfea00d (tambahkan)
     const existingSuppliers = await Supplier.query().count('* as total')
     
     if (existingSuppliers[0].total === 0) {
       await Supplier.createMany(suppliersData)
-      console.log('✅ Suppliers created successfully!')
-      console.log('🏢 Sample suppliers added to database')
+      console.log('✅ Electronic suppliers created successfully!')
+      console.log('🏢 Sample electronic suppliers added to database')
     } else {
       console.log('ℹ️  Suppliers already exist in database')
     }
